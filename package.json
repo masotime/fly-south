@@ -1,0 +1,46 @@
+{
+  "name": "fly-south",
+  "version": "1.0.0",
+  "description": "Fly South",
+  "main": "src/server/index.js",
+  "private": true,
+  "scripts": {
+    "start": "babel-node src/server/index.js",
+    "lint": "eslint src/*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben",
+  "license": "ISC",
+  "dependencies": {
+    "@mapbox/polylabel": "^1.0.2",
+    "babel-cli": "^6",
+    "babel-loader": "^6",
+    "babel-plugin-module-resolver": "^2",
+    "babel-polyfill": "^6",
+    "babel-preset-env": "^1",
+    "babel-preset-react": "^6",
+    "babel-preset-stage-0": "^6.24.1",
+    "body-parser": "^1.18.3",
+    "chokidar": "^1",
+    "compression": "^1",
+    "express": "^4",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "passport-twitter": "^1.0.4",
+    "prop-types": "^15",
+    "react": "^16",
+    "react-dom": "^16",
+    "react-time-ago": "^2.0.3",
+    "require-watch": "^1",
+    "serialize-javascript": "^1",
+    "twitter": "^1.7.1",
+    "webpack": "^3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8",
+    "eslint": "^4",
+    "eslint-import-resolver-babel-module": "^3",
+    "eslint-plugin-react": "^7",
+    "eslint-plugin-import": "^2"
+  }
+}
