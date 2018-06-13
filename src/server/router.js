@@ -20,10 +20,8 @@ router.get('*', (req, res) => {
 		return res.redirect('/auth/twitter');
 	}
 
-	console.log(req.user);
-
 	const model = {
-		title: 'fly-south',
+		title: 'Twitter Map Projector',
 		message: `Hello ${req.user.name}!`
 	};
 

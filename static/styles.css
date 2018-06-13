@@ -1,0 +1,67 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.grid-header {
+  grid-column: 1 / -1;
+}
+
+.grid-map {}
+
+.grid-tweets {
+  max-width: 30vw;
+  padding: 10px;
+  background-color: #FFFFEC;
+  word-wrap: break-word;
+  overflow: scroll;
+}
+
+ul.grid-tweets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  max-height: 100%;
+}
+
+ul.grid-tweets li {
+  border: 1px solid black;
+  border-radius: .5em;
+  padding: 1em;
+  font-size: 0.8em;
+  margin: 0.5em;
+}
+
+.grid-wrapper {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 4fr;
+  column-gap: 10px;
+  row-gap: 10px;
+  padding: 10px;
+}
+
+.MapBox--container {
+  width: 100%;
+  height: 100%;
+}
+
+.photo {
+  max-width: 100%;
+}
+
+.tweet-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: translate(50%, -100%);
+  cursor: pointer;
+}

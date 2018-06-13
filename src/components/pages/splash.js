@@ -1,79 +1,26 @@
-import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import ReactTimeAgo from 'react-time-ago';
-import polylabel from '@mapbox/polylabel';
+/* eslint-disable react/prop-types */
+/* global fetch */
+import React, { Component } from 'react';
+import { string } from 'prop-types';
 
-const { string } = PropTypes;
+import TweetsList from 'components/sections/TweetsList';
+import TweetMap from 'components/sections/TweetMap';
 
-function Pin() { return <span>📌</span>; }
-function Globe() { return <span>🌐</span>; }
-function Guesstimate() { return <span>❓</span>; }
-
-function Location({ coordinates, place }) {
-	const { full_name, bounding_box } = place;
-
-	function renderCoordinates() {
-		if (coordinates) {
-			const [ longitude, latitude ] = coordinates.coordinates;
-			return <span><Globe />[ {longitude}, {latitude} ]</span>;
-		} else if (bounding_box) {
-			const [ longitude, latitude ] = polylabel(bounding_box.coordinates, 1.0);
-			return <span><Guesstimate />[ {longitude}, {latitude} ]</span>;
-		}
-		return null;
-	}
-
-	return <p><Pin />{full_name} {renderCoordinates()} </p>;
-}
-
-function Photos({ media = [] }) {
-	return (
-		<Fragment>
-			{
-				media
-					.filter(item => item.type === 'photo')
-					.map(item => <img key={item.id} src={item.media_url} />)
-			}
-		</Fragment>
-	);
-}
-
-function TweetsList({ tweets }) {
-	return (
-		<ul>
-			{ 
-				tweets
-					.filter(tweet => tweet.place)
-					.map(tweet => {
-					const { id_str, text, created_at, entities: { media }, place, coordinates } = tweet;
-					const relativeTime = <small><ReactTimeAgo>{new Date(created_at)}</ReactTimeAgo></small>;
-
-					return (
-						<li key={id_str}>
-							<div>
-								<p>{text}</p>
-								<Location coordinates={coordinates} place={place} />
-								<Photos media={media} />
-								{ relativeTime }
-							</div>
-						</li>
-					);
-				})
-			}
-		</ul>
-	)
-}
+import { tweetToPin } from 'common/maputils';
+import { Provider } from 'components/contexts/store';
 
 export default class SplashPage extends Component {
 	state = {
 		tweets: [],
 		username: '',
 		fetching: false,
+		selectedTweetId: null,
+		store: {}
 	};
 
 	isBusy = () => this.state.fetching;
 	
-	fetchTweets = async (e) => {
+	fetchTweets = async () => {
 		this.setState({ fetching: true });
 		try {
 			const body = JSON.stringify({ screen_name: this.state.username });
@@ -94,6 +41,10 @@ export default class SplashPage extends Component {
 			this.setState({ fetching: false });
 		}
 	};
+
+	handlePinClick= tweetId => {
+		this.setState({ selectedTweetId: tweetId });
+	}
 
 	renderForm = () => {
 		return (
@@ -119,14 +70,22 @@ export default class SplashPage extends Component {
 
 	render() {
 		const { title, message } = this.props;
+		const pins = this.state.tweets.filter(tweet => tweet.place).map(tweetToPin);
 
 		return (
-			<div>
-				<h1>{title}</h1>
-				<p>{message}</p>
-				{ this.renderForm() }
-				<TweetsList tweets={this.state.tweets} />
-			</div>
+			<Provider value={this.state.store}>
+				<div className="grid-wrapper">
+					<div className="grid-header">
+						<h1>{title}</h1>
+						<p>{message}</p>
+						{ this.renderForm() }
+					</div>
+					<div className="grid-map">
+						<TweetMap pins={pins} onPinClick={this.handlePinClick}/>
+					</div>
+					<TweetsList className="grid-tweets" selectedTweetId={this.state.selectedTweetId} tweets={this.state.tweets} />
+				</div>
+			</Provider>
 		);
 	}
 }

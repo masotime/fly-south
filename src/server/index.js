@@ -22,6 +22,7 @@ app.use(bundler());
 // - app.use('/', (req, res, next) => require('server/router').default(req, res, next));
 // + app.use('/', router);
 initWatcher(require.resolve('server/router'));
+app.use('/static', express.static(`${process.cwd()}/static`));
 app.use('/', (req, res, next) => require('server/router').default(req, res, next));
 
 app.listen(PORT, () => console.log(`✅  Web server started at http://localhost:${PORT}`));
