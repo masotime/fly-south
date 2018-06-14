@@ -6,7 +6,7 @@ import { string } from 'prop-types';
 import TweetsList from 'components/sections/TweetsList';
 import TweetMap from 'components/sections/TweetMap';
 
-import { tweetToPin } from 'common/maputils';
+import { tweetToPin, generateSource, pinToCoordinates } from 'common/maputils';
 import { Provider } from 'components/contexts/store';
 
 export default class SplashPage extends Component {
@@ -33,8 +33,10 @@ export default class SplashPage extends Component {
 				}
 			});
 			const timeline = await apiResponse.json();
+			const pins = timeline.filter(tweet => tweet.place).map(tweetToPin);
+			const source = await generateSource(pins.map(pinToCoordinates));
 
-			return this.setState({ tweets: timeline });
+			return this.setState({ tweets: timeline, pins, source });
 		} catch (err) {
 			console.error('Could not fetch timeline', err);
 		} finally {
@@ -70,7 +72,6 @@ export default class SplashPage extends Component {
 
 	render() {
 		const { title, message } = this.props;
-		const pins = this.state.tweets.filter(tweet => tweet.place).map(tweetToPin);
 
 		return (
 			<Provider value={this.state.store}>
@@ -81,7 +82,7 @@ export default class SplashPage extends Component {
 						{ this.renderForm() }
 					</div>
 					<div className="grid-map">
-						<TweetMap pins={pins} onPinClick={this.handlePinClick}/>
+						<TweetMap pins={this.state.pins} route={this.state.source} onPinClick={this.handlePinClick}/>
 					</div>
 					<TweetsList className="grid-tweets" selectedTweetId={this.state.selectedTweetId} tweets={this.state.tweets} />
 				</div>

@@ -62,6 +62,6 @@ ul.grid-tweets li {
   position: absolute;
   width: 20px;
   height: 20px;
-  transform: translate(50%, -100%);
+  transform: translate(-50%, -100%);
   cursor: pointer;
 }

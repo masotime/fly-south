@@ -139,32 +139,31 @@ export default class Map extends Component {
 
   // By avoiding imports, using require(.ensure) and componentDidMount,
   // we bypass rendering (even loading libraries) server side
-  componentDidMount() {
-    import(/* webpackChunkName: "mapbox-gl" */ 'mapbox-gl').then(mapboxgl => {
-      const { accessToken } = this.props;
-      const { container } = this;
+  async componentDidMount() {
+    const mapboxgl = await import(/* webpackChunkName: "mapbox-gl" */ 'mapbox-gl');
+    const { accessToken } = this.props;
+    const { container } = this;
 
-      if (!container) return;
-      const mapInitProps = Object.keys(MAP_PROP_TYPES).reduce(
-        (map, key) => {
-          if (this.props[key]) {
-            map[key] = this.props[key];
-          }
-          return map;
-        },
-      {});
+    if (!container) return;
+    const mapInitProps = Object.keys(MAP_PROP_TYPES).reduce(
+      (map, key) => {
+        if (this.props[key]) {
+          map[key] = this.props[key];
+        }
+        return map;
+      },
+    {});
 
-      this.mapboxgl = mapboxgl;
-      this.navControl = new mapboxgl.NavigationControl();
+    this.mapboxgl = mapboxgl;
+    this.navControl = new mapboxgl.NavigationControl();
 
-      mapboxgl.accessToken = accessToken;
-      const map = new mapboxgl.Map({ container, ...mapInitProps });
+    mapboxgl.accessToken = accessToken;
+    const map = new mapboxgl.Map({ container, ...mapInitProps });
 
-      map.on('load', () => {
-        this.map = map;
-        this.updateMap();
-        this.forceUpdate();
-      });      
+    map.on('load', () => {
+      this.map = map;
+      this.updateMap();
+      this.forceUpdate();
     });
   }
 

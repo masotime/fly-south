@@ -17,4 +17,6 @@ export const MAPBOX_ACCESS_TOKEN = (() => {
   }
 })();
 
+export const ARC_RESOLUTION = 3;
+
 if (!MAPBOX_ACCESS_TOKEN) throw new Error('Could not find MAPBOX_ACCESS_TOKEN in the environment');

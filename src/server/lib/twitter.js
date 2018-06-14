@@ -24,7 +24,7 @@ class TwitterApi {
   }
 
   async getUserTimeline(screen_name) {
-    return await this.client.get('statuses/user_timeline', { screen_name, tweet_mode: 'extended' });
+    return await this.client.get('statuses/user_timeline', { screen_name, tweet_mode: 'extended', count: 200 });
   }
 }
 
