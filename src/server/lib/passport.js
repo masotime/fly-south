@@ -16,8 +16,13 @@ function getConfig() {
   return { consumerKey, consumerSecret, callbackURL };
 }
 
+const config = getConfig();
+const { port, domain, callbackURL } = config;
+
+console.log(`Twitter OAuth configuration: ${JSON.stringify({ port, domain, callbackURL })}`)
+
 const twitterStrategy = new TwitterStrategy(
-  getConfig(),
+  config,
   (token, tokenSecret, profile, done) => {
     done(null, {
       ...profile._json,
