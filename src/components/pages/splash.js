@@ -19,7 +19,7 @@ export default class SplashPage extends Component {
 	};
 
 	isBusy = () => this.state.fetching;
-	
+
 	fetchTweets = async () => {
 		this.setState({ fetching: true });
 		try {
@@ -72,9 +72,10 @@ export default class SplashPage extends Component {
 
 	render() {
 		const { title, message } = this.props;
+		const { pins, source, selectedTweetId, tweets, store } = this.state;
 
 		return (
-			<Provider value={this.state.store}>
+			<Provider value={store}>
 				<div className="grid-wrapper">
 					<div className="grid-header">
 						<h1>{title}</h1>
@@ -82,9 +83,9 @@ export default class SplashPage extends Component {
 						{ this.renderForm() }
 					</div>
 					<div className="grid-map">
-						<TweetMap pins={this.state.pins} route={this.state.source} onPinClick={this.handlePinClick}/>
+						<TweetMap pins={pins} route={source} onPinClick={this.handlePinClick} selectedTweetId={selectedTweetId} />
 					</div>
-					<TweetsList className="grid-tweets" selectedTweetId={this.state.selectedTweetId} tweets={this.state.tweets} />
+					<TweetsList className="grid-tweets" selectedTweetId={selectedTweetId} tweets={tweets} />
 				</div>
 			</Provider>
 		);

@@ -31,7 +31,22 @@ const compiler = webpack({
 			{
 				test: /.js$/,
 				exclude: /node_modules/,
-				use: [ 'babel-loader' ],
+				use: {
+					loader: 'babel-loader',
+					options: {
+						babelrc: false,
+						presets: ['env', 'react', 'stage-0'],
+						plugins: [
+							'syntax-dynamic-import',
+							['module-resolver',
+								{
+								"root": ["src"],
+								"transformFunctions": ["require", "require.resolve", "import"]
+								}
+							]
+						]
+					}
+				}
 			}
 		]
 	},

@@ -14,7 +14,7 @@ function isEqual(propsToCompare, currentSource, newSource) {
   for (const prop of propsToCompare) {
     // stupid exception
     if (prop === 'data') {
-      if (JSON.stringify(currentSource._data.data) !== JSON.stringify(newSource.data.data)) {
+      if (JSON.stringify(currentSource._data) !== JSON.stringify(newSource.data)) {
         return false;
       }
     } else if (JSON.stringify(currentSource[prop]) !== JSON.stringify(newSource[prop])) {
@@ -41,7 +41,7 @@ export default class Source extends Component {
     const propsToCompare = Object.keys(sourceOptions);
 
     if (map) {
-      console.log(this.state.sourceState);
+      // console.log(this.state.sourceState);
       switch (this.state.sourceState) {
         case STATES.LOADING:
           map.addSource(id, sourceOptions);

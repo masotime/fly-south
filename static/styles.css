@@ -26,7 +26,7 @@ ul.grid-tweets {
   list-style: none;
   padding: 0;
   margin: 0;
-  
+
   max-height: 100%;
 }
 
@@ -61,7 +61,6 @@ ul.grid-tweets li {
 .tweet-marker {
   position: absolute;
   width: 20px;
-  height: 20px;
   transform: translate(-50%, -100%);
   cursor: pointer;
 }

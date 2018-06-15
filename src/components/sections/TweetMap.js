@@ -34,11 +34,11 @@ export default class TweetMap extends Component {
   }
 
   render() {
-    const { pins = DEFAULT_PINS, onPinClick = DEFAULT_ON_PIN_CLICK } = this.props;
+    const { pins = DEFAULT_PINS, onPinClick = DEFAULT_ON_PIN_CLICK, selectedTweetId } = this.props;
     const boundingBox = getBoundingBox(
       pins.map(({ lngLat }) => [lngLat[0], lngLat[1]])
     );
-  
+
     return (
       <Map
         accessToken={MAPBOX_ACCESS_TOKEN}
@@ -51,9 +51,9 @@ export default class TweetMap extends Component {
         {
           pins.map(({ lngLat, tweetId }) => {
             return (
-              <Marker key={tweetId} lngLat={lngLat}>
+              <Marker key={tweetId} lngLat={lngLat} selected={selectedTweetId === tweetId}>
                 <div onClick={() => onPinClick(tweetId)} className="tweet-marker">
-                  <Pin fill="black"/>
+                  <Pin selected={selectedTweetId === tweetId} />
                 </div>
               </Marker>
             );
@@ -61,7 +61,7 @@ export default class TweetMap extends Component {
         }
         { this.renderRoute() }
       </Map>
-    );    
+    );
   }
 
 }

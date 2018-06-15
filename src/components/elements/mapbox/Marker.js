@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import {
   unmountComponentAtNode,
-  unstable_renderSubtreeIntoContainer, // eslint-disable-line camelcase
+  createPortal, // eslint-disable-line camelcase
 } from 'react-dom';
 
 function latLngChanged(a, b) {
@@ -29,6 +29,10 @@ function nodeChanged(a, b) {
 
 export default class Marker extends Component {
 
+  state = {
+    portalEl: null
+  };
+
   positionMarker(lngLat) {
     const { mapboxgl, map } = this.context;
 
@@ -49,7 +53,7 @@ export default class Marker extends Component {
 
   renderIntoMarker(children) {
     if (this.container) {
-      unstable_renderSubtreeIntoContainer(this, children, this.container);
+      this.setState({ portalEl: createPortal(children, this.container) });
     }
   }
 
@@ -58,13 +62,25 @@ export default class Marker extends Component {
     this.renderIntoMarker(this.props.children);
   }
 
-  UNSTABLE_componentWillReceiveProps({ lngLat, children }) {
+  componentDidUpdate(prevProps) {
+    const { lngLat, children } = prevProps;
+
     if (latLngChanged(this.props.lngLat, lngLat)) {
       this.positionMarker(lngLat);
     }
 
-    if (nodeChanged(this.props.children, children)) {
-      this.renderIntoMarker(children);
+    if (nodeChanged(children, this.props.children)) {
+      this.renderIntoMarker(this.props.children);
+    }
+
+    if (this.container) {
+      const wasSelected = this.props.selected && !prevProps.selected;
+      const wasDeselected = !this.props.selected && prevProps.selected;
+      const zIndex = this.props.selected ? 1000: '';
+
+      if (wasSelected || wasDeselected) {
+        this.container.style.zIndex = zIndex
+      }
     }
   }
 
@@ -80,13 +96,14 @@ export default class Marker extends Component {
   }
 
   render() {
-    return null;
+    return this.state.portalEl;
   }
 }
 
 Marker.propTypes = {
   children: PropTypes.node.isRequired,
   lngLat: PropTypes.arrayOf(PropTypes.number),
+  selected: PropTypes.bool
 };
 
 Marker.contextTypes = {
