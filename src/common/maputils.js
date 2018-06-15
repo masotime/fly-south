@@ -70,6 +70,16 @@ async function drawLine(origin, destination) {
   return routeFeature;
 }
 
+export function determineCoordinates({ place, coordinates }) {
+	const { bounding_box } = place;
+
+  if (coordinates) {
+    return coordinates.coordinates;
+  } else if (bounding_box) {
+    return polylabel(bounding_box.coordinates, 1.0);
+  }
+}
+
 export async function generateSource(coordinates) {
   const source = {
     type: 'geojson',
@@ -80,7 +90,7 @@ export async function generateSource(coordinates) {
   };
 
   const count = coordinates.length;
-  // const count = 2;
+
   for (let i = 0; i < count - 1; i += 1) {
     const segmentFeature = await drawLine(coordinates[i], coordinates[i+1]);
     source.data.features.push(segmentFeature);

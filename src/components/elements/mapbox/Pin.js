@@ -4,7 +4,7 @@ import React from 'react';
 export default function Pin({ selected }) {
 	const fill = selected ? 'red' : 'black';
 	const style = {
-		'vertical-align': 'bottom'
+		'verticalAlign': 'bottom'
 	};
 
   return (

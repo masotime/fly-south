@@ -2,23 +2,28 @@
 import React from 'react';
 import polylabel from '@mapbox/polylabel';
 
-import { Globe, Guesstimate, Pin } from 'components/elements/icons';
+import { Globe, Guesstimate } from 'components/elements/icons';
+
+function LngLat({ coordinates, disabled, isEstimate }) {
+	if (disabled) return null;
+
+	const [ longitude, latitude ] = coordinates;
+return <span>{isEstimate ? <Guesstimate /> : <Globe />} [ {longitude}, {latitude} ]</span>;
+}
 
 function Location({ coordinates, place }) {
 	const { full_name, bounding_box } = place;
 
 	function renderCoordinates() {
 		if (coordinates) {
-			const [ longitude, latitude ] = coordinates.coordinates;
-			return <span><Globe />[ {longitude}, {latitude} ]</span>;
+			return <span><LngLat disabled coordinates={coordinates.coordinates} /></span>;
 		} else if (bounding_box) {
-			const [ longitude, latitude ] = polylabel(bounding_box.coordinates, 1.0);
-			return <span><Guesstimate />[ {longitude}, {latitude} ]</span>;
+			return <span><LngLat disabled isEstimate coordinates={polylabel(bounding_box.coordinates, 1.0)} /></span>;
 		}
 		return null;
 	}
 
-	return <p><Pin />{full_name} {renderCoordinates()} </p>;
+	return <small>{full_name} {renderCoordinates()}</small>;
 }
 
 export default Location;

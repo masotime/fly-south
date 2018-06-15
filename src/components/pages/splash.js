@@ -9,6 +9,8 @@ import TweetMap from 'components/sections/TweetMap';
 import { tweetToPin, generateSource, pinToCoordinates } from 'common/maputils';
 import { Provider } from 'components/contexts/store';
 
+import { Search } from 'components/elements/icons';
+
 export default class SplashPage extends Component {
 	state = {
 		tweets: [],
@@ -44,19 +46,20 @@ export default class SplashPage extends Component {
 		}
 	};
 
-	handlePinClick= tweetId => {
-		this.setState({ selectedTweetId: tweetId });
+	handlePinClick = tweetId => {
+		this.setState({ selectedTweetId: tweetId, doNotScroll: false });
+	}
+
+	handleTweetClick = (tweetId, coordinates) => {
+		// maybe also move the map
+		this.setState({ selectedTweetId: tweetId, doNotScroll: true, flyTo: coordinates });
 	}
 
 	renderForm = () => {
 		return (
-			<div>
-				<button
-					type="button"
-					disabled={this.isBusy()}
-					onClick={this.fetchTweets}
-				>Fetch Tweets for</button>
+			<div className="search-bar">
 				<input
+					className="fancy-input"
 					onKeyUp={e => {
 						if (e.key === 'Enter') {
 							e.preventDefault();
@@ -65,27 +68,31 @@ export default class SplashPage extends Component {
 					}}
 					onChange={e => this.setState({ username: e.target.value })}
 					value={this.state.username}
+					placeholder="e.g. couch, vjo, wickman"
 				/>
+				<button
+					className="search-button"
+					type="button"
+					disabled={this.isBusy()}
+					onClick={this.fetchTweets}
+				><Search /></button>				
 			</div>
 		);
 	};
 
 	render() {
-		const { title, message } = this.props;
-		const { pins, source, selectedTweetId, tweets, store } = this.state;
+		const { pins, source, selectedTweetId, tweets, store, doNotScroll, flyTo } = this.state;
 
 		return (
 			<Provider value={store}>
 				<div className="grid-wrapper">
 					<div className="grid-header">
-						<h1>{title}</h1>
-						<p>{message}</p>
 						{ this.renderForm() }
 					</div>
 					<div className="grid-map">
-						<TweetMap pins={pins} route={source} onPinClick={this.handlePinClick} selectedTweetId={selectedTweetId} />
+						<TweetMap pins={pins} route={source} onPinClick={this.handlePinClick} selectedTweetId={selectedTweetId} flyTo={flyTo} />
 					</div>
-					<TweetsList className="grid-tweets" selectedTweetId={selectedTweetId} tweets={tweets} />
+					<TweetsList className="grid-tweets" onTweetClick={this.handleTweetClick} selectedTweetId={selectedTweetId} tweets={tweets} doNotScroll={doNotScroll} />
 				</div>
 			</Provider>
 		);

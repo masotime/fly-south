@@ -34,7 +34,7 @@ export default class TweetMap extends Component {
   }
 
   render() {
-    const { pins = DEFAULT_PINS, onPinClick = DEFAULT_ON_PIN_CLICK, selectedTweetId } = this.props;
+    const { pins = DEFAULT_PINS, onPinClick = DEFAULT_ON_PIN_CLICK, selectedTweetId, flyTo } = this.props;
     const boundingBox = getBoundingBox(
       pins.map(({ lngLat }) => [lngLat[0], lngLat[1]])
     );
@@ -47,6 +47,7 @@ export default class TweetMap extends Component {
         boundingBox={boundingBox}
         zoom={0}
         navControl="top-left"
+        flyTo={flyTo}
       >
         {
           pins.map(({ lngLat, tweetId }) => {

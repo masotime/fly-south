@@ -167,6 +167,12 @@ export default class Map extends Component {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.map && JSON.stringify(prevProps.flyTo) !== JSON.stringify(this.props.flyTo)) {
+      this.map.flyTo({ center: this.props.flyTo, zoom: 6 });
+    }
+  }
+
   render() {
     return (
       <div
@@ -191,6 +197,7 @@ Map.propTypes = {
   children: PropTypes.node,
   boundingBox: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
   navControl: PropTypes.string,
+  flyTo: PropTypes.arrayOf(PropTypes.number),
   ...MAP_PROP_TYPES,
 };
 
