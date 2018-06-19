@@ -5,6 +5,7 @@ export const BUNDLE_PATHNAME = '/bundle.js';
 export const BUNDLE_SOURCE = resolve(process.cwd(), 'src/client/bundle.js');
 export const SHARED_STATE_NAME = '__MODEL__';
 export const PORT = process.env.PORT || '8000';
+export const AUTH_PORT = process.env.AUTH_PORT || PORT;
 
 // "secret" environment variables
 export const MAPBOX_ACCESS_TOKEN = (() => {

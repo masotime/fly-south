@@ -5,8 +5,8 @@ export default function Search() {
     <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
       <defs>
       <linearGradient id="magGrad" gradientUnits="userSpaceOnUse" x1="287.0869" y1="227.6745" x2="533.7535" y2="385.6746">
-        <stop  offset="0" style={{ 'stop-color': '#0BD3F6' }}/>
-        <stop  offset="1" style={{ 'stop-color': '#2998D5' }}/>
+        <stop offset="0" style={{ 'stopColor': '#0BD3F6' }}/>
+        <stop offset="1" style={{ 'stopColor': '#2998D5' }}/>
       </linearGradient>   
       </defs>
       <g id="wholeGroup" fill="url(#magGrad)" stroke="url(#magGrad)">

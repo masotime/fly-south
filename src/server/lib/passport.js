@@ -6,9 +6,10 @@ import session from 'express-session';
 function getConfig() {
   const consumerKey = process.env.TWITTER_CONSUMER_KEY;
   const consumerSecret = process.env.TWITTER_CONSUMER_SECRET;
-  const port = process.env.PORT === '80' || process.env.PORT === '443' ? '' : `:${process.env.PORT || '8000'}`;
+  const port = process.env.AUTH_PORT === '80' || process.env.AUTH_PORT === '443' ? '' : `:${process.env.AUTH_PORT || '8000'}`;
   const domain = process.env.DOMAIN || 'www.masotime.com';
-  const callbackURL = `http://${domain}${port}/auth/twitter/callback`;
+  const protocol = process.env.AUTH_PORT === '443' ? 'https' : 'http';
+  const callbackURL = `${protocol}://${domain}${port}/auth/twitter/callback`;
 
   if (!consumerKey) throw new Error('Could not find TWITTER_CONSUMER_KEY in env variables');
   if (!consumerSecret) throw new Error('Could not find TWITTER_CONSUMER_SECRET in env variables');
