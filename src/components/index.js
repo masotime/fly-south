@@ -9,10 +9,9 @@ const { object } = PropTypes;
 export default class App extends Component {
 	render() {
 		const { model } = this.props;
-		const { title, message } = model;
 		return (
 			<Html model={model}>
-				<SplashPage title={title} message={message} />
+				<SplashPage {...model} />
 			</Html>
 		);
 	}

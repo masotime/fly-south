@@ -27,6 +27,7 @@
     "chokidar": "^1",
     "compression": "^1",
     "express": "^4",
+    "express-favicon": "^2.0.1",
     "express-session": "^1.15.6",
     "mapbox-gl": "^0.45.0",
     "passport": "^0.4.0",

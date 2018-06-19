@@ -49,15 +49,24 @@ export default function twitterLoginMiddleware() {
   // middleware required to support login persistence
   router.use(session(sessionConfig));
   router.use(passport.initialize());
+  router.use((req, res, next) => {
+    if (!req.originalUrl.startsWith('/auth')) {
+      req.session.originalUrl = req.originalUrl;
+    }
+    
+    next();
+  });
   router.use(passport.session());  
 
   router.get('/auth/twitter', passport.authenticate('twitter'));
-  router.get('/auth/twitter/callback',
+  router.get('/auth/twitter/callback', (req, res, next) => {
+    const successRedirect = req.session.originalUrl || '/';
+    req.session.originalUrl = '';
     passport.authenticate('twitter', {
-      successRedirect: '/?success=true',
+      successRedirect,
       failureRedirect: '/?success=false'
-    })
-  );
+    })(req, res, next);
+  });
 
   return router;
 }

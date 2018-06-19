@@ -14,7 +14,7 @@ import { Search } from 'components/elements/icons';
 export default class SplashPage extends Component {
 	state = {
 		tweets: [],
-		username: '',
+		username: this.props.screen_name || '',
 		fetching: false,
 		selectedTweetId: null,
 		store: {}
@@ -53,6 +53,10 @@ export default class SplashPage extends Component {
 	handleTweetClick = (tweetId, coordinates) => {
 		// maybe also move the map
 		this.setState({ selectedTweetId: tweetId, doNotScroll: true, flyTo: coordinates });
+	}
+
+	componentDidMount() {
+		if (this.state.username != '') this.fetchTweets();
 	}
 
 	renderForm = () => {
@@ -101,5 +105,6 @@ export default class SplashPage extends Component {
 
 SplashPage.propTypes = {
 	title: string,
-	message: string
+	message: string,
+	screen_name: string
 };
